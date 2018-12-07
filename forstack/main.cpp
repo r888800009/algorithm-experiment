@@ -26,11 +26,15 @@ int star[8][2] = {
     {1, -1}
 };
 
+#define inside(x, y) \
+    x < 0 || x >= sizeX || \
+    y < 0 || y >= sizeY
+
+
 int minlen = -1;
 void rec(pos xy, int len)
 {
-    if (!(xy.x < 0 || xy.x >= sizeX ||
-        xy.y < 0 || xy.y >= sizeY ||
+    if (!(inside(xy.x, xy.y) ||
         gDone[inedx(xy.x, xy.y)] > -1 &&
         gDone[inedx(xy.x, xy.y)] <= len)) {
 
@@ -59,16 +63,17 @@ void loop()
     mode[len] = 0;
 
     while (len >= 0) {
-        if ((xy.x < 0 || xy.x >= sizeX ||
-            xy.y < 0 || xy.y >= sizeY ||
+        if ((inside(xy.x, xy.y) ||
             gDone[inedx(xy.x, xy.y)] > -1 &&
             gDone[inedx(xy.x, xy.y)] <= len) &&
             mode[len] == 0 || mode[len] >= 8) {
         } else if (gMap[inedx(xy.x, xy.y)] == 'E') {
             gDone[inedx(xy.x, xy.y)] = len;
-            int i = mode[len]++;
             stack[len] = xy;
-            xy = {xy.x + star[i][0], xy.y + star[i][1]};
+            xy = {xy.x + star[mode[len]][0],
+                xy.y + star[mode[len]][1]};
+
+            ++mode[len];
 
             // push
             len++;
