@@ -62,31 +62,32 @@ void loop()
     mode[len] = 0;
 
     while (len >= 0) {
-        if ((inside(xy.x, xy.y) ||
+        if (!((inside(xy.x, xy.y) ||
             gDone[inedx(xy.x, xy.y)] > -1 &&
             gDone[inedx(xy.x, xy.y)] <= len) &&
             mode[len] == 0 || mode[len] >= 8 ||
-            minlen != -1 && minlen < len) {
-        } else if (gMap[inedx(xy.x, xy.y)] == 'E') {
-            gDone[inedx(xy.x, xy.y)] = len;
-            stack[len] = xy;
-            xy = {xy.x + star[mode[len]][0],
-                xy.y + star[mode[len]][1]};
+            minlen != -1 && minlen < len)) {
 
-            ++mode[len];
+            if (gMap[inedx(xy.x, xy.y)] == 'E') {
+                gDone[inedx(xy.x, xy.y)] = len;
+                stack[len] = xy;
+                xy = {xy.x + star[mode[len]][0],
+                    xy.y + star[mode[len]][1]};
 
-            // push
-            len++;
-            mode[len] = 0;
-            continue;
+                ++mode[len];
 
-        } else if (gMap[inedx(xy.x, xy.y)] == 'G') {
-            if (minlen == -1 || minlen > len)
-                minlen = len;
+                // push
+                len++;
+                mode[len] = 0;
+                continue;
 
-            gDone[inedx(xy.x, xy.y)] = -99;
+            } else if (gMap[inedx(xy.x, xy.y)] == 'G') {
+                if (minlen == -1 || minlen > len)
+                    minlen = len;
+
+                gDone[inedx(xy.x, xy.y)] = -99;
+            }
         }
-
         // pop
         len--;
         if (len >= 0)
