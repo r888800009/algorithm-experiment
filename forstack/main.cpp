@@ -36,7 +36,8 @@ void rec(pos xy, int len)
 {
     if (!(inside(xy.x, xy.y) ||
         gDone[inedx(xy.x, xy.y)] > -1 &&
-        gDone[inedx(xy.x, xy.y)] <= len)) {
+        gDone[inedx(xy.x, xy.y)] <= len ||
+        minlen != -1 && minlen < len)) {
 
         if (gMap[inedx(xy.x, xy.y)] == 'E') {
             gDone[inedx(xy.x, xy.y)] = len;
@@ -64,7 +65,8 @@ void loop()
         if ((inside(xy.x, xy.y) ||
             gDone[inedx(xy.x, xy.y)] > -1 &&
             gDone[inedx(xy.x, xy.y)] <= len) &&
-            mode[len] == 0 || mode[len] >= 8) {
+            mode[len] == 0 || mode[len] >= 8 ||
+            minlen != -1 && minlen < len) {
         } else if (gMap[inedx(xy.x, xy.y)] == 'E') {
             gDone[inedx(xy.x, xy.y)] = len;
             stack[len] = xy;
