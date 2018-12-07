@@ -37,10 +37,8 @@ void rec(pos xy, int len)
         if (gMap[inedx(xy.x, xy.y)] == 'E') {
             gDone[inedx(xy.x, xy.y)] = len;
             for (int i = 0; i < 8; i++)
-            {
                 rec({xy.x + star[i][0], xy.y + star[i][1]}, len + 1);
-                //xy = {xy.x - star[i][0], xy.y - star[i][1]};
-            }
+
         } else if (gMap[inedx(xy.x, xy.y)] == 'G') {
 
             if (minlen == -1)
