@@ -105,6 +105,27 @@ int timing(const string &display, timerHandler doing)
     return (clock() - t);
 }
 
+void test(const string &display, const function<void()> doing, int time, int *done)
+{
+    long long avg = 0;
+    cout << display << endl;
+    for (int i = 0; i < time; i++) {
+        minlen = -1;
+        fill(gDone, gDone + sizeX * sizeY, -1);
+
+        avg += timing("", [&]() { doing(); });
+    }
+
+    // print summary
+    cout << "avg: "<< avg / time << endl;
+    cout << "min: "<< minlen << endl;
+    for (int y = 0; y < sizeY; y++){
+        for (int x = 0; x < sizeX; x++)
+            cout << setw(3) << done[inedx(x, y)];
+        cout << endl;
+    }
+}
+
 int main(int argc, char *argv[]) {
     fstream fin;
     int id;
@@ -123,40 +144,9 @@ int main(int argc, char *argv[]) {
     gDone = &done[0][0];
 
     int time = 1000;
-    long long avg = 0;
+
     // recursive
-    cout << "recursive: " << endl;
-    for (int i = 0; i < time; i++) {
-        minlen = -1;
-        fill(gDone, gDone + sizeX * sizeY, -1);
-
-        avg += timing("", [&]() { rec({0, 0}, 0); });
-    }
-
-    cout << "avg: "<< avg / time << endl;
-    cout << "min: "<< minlen << endl;
-    for (int y = 0; y < sizeY; y++){
-        for (int x = 0; x < sizeX; x++)
-            cout << setw(3) << done[x][y];
-        cout << endl;
-    }
-
-    avg = 0;
-    // loop
-    cout << "loop: " << endl;
-    for (int i = 0; i < time; i++) {
-        minlen = -1;
-        fill(gDone, gDone + sizeX * sizeY, -1);
-
-        avg += timing("", [&]() { loop(); });
-    }
-
-    cout << "avg: "<< avg / time << endl;
-    cout << "min: "<< minlen << endl;
-    for (int y = 0; y < sizeY; y++){
-        for (int x = 0; x < sizeX; x++)
-            cout << setw(3) << done[x][y];
-        cout << endl;
-    }
+    test("recursive: ", [&]() { rec({0, 0}, 0); }, time, gDone);
+    test("loop: ", [&]() { loop(); }, time, gDone);
 }
 
