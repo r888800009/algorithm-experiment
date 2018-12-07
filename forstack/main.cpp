@@ -44,11 +44,9 @@ void rec(pos xy, int len)
                 rec({xy.x + star[i][0], xy.y + star[i][1]}, len + 1);
 
         } else if (gMap[inedx(xy.x, xy.y)] == 'G') {
+            if (minlen == -1 || minlen > len)
+                minlen = len;
 
-            if (minlen == -1)
-                minlen = len;
-            else if (minlen > len)
-                minlen = len;
             gDone[inedx(xy.x, xy.y)] = -99;
         }
     }
@@ -81,14 +79,13 @@ void loop()
             continue;
 
         } else if (gMap[inedx(xy.x, xy.y)] == 'G') {
+            if (minlen == -1 || minlen > len)
+                minlen = len;
 
-            if (minlen == -1)
-                minlen = len;
-            else if (minlen > len)
-                minlen = len;
             gDone[inedx(xy.x, xy.y)] = -99;
         }
 
+        // pop
         len--;
         if (len >= 0)
             xy = stack[len];
@@ -122,7 +119,7 @@ int main(int argc, char *argv[]) {
     int done[sizeX][sizeY];
     gDone = &done[0][0];
 
-    int time = 500;
+    int time = 1000;
     long long avg = 0;
     // recursive
     cout << "recursive: " << endl;
